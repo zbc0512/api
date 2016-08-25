@@ -1,4 +1,4 @@
-package io.zbc.spider;
+package io.zbc.api;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,8 +11,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Spider {
     public static String sendGet(String url) {
@@ -25,12 +23,12 @@ public class Spider {
             // 将string转成url对象
             URL realUrl = new URL(url);
             // 创建代理服务器
-            // InetSocketAddress addr = new InetSocketAddress("proxy.pcnet.com.cn", 3128);
+            InetSocketAddress addr = new InetSocketAddress("proxy.piccnet.com.cn", 3128);
             // Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr); // Socket 代理
-            // Proxy proxy = new Proxy(Proxy.Type.HTTP, addr); // http 代理
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, addr); // http 代理
             // "password"));// 设置代理的用户和密码
             // 初始化一个链接到那个url的连接
-            URLConnection connection = realUrl.openConnection();
+            URLConnection connection = realUrl.openConnection(proxy);
             // 开始实际的连接
             connection.connect();
             // 初始化 BufferedReader输入流来读取URL的响应
