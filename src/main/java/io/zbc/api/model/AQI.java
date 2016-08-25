@@ -19,7 +19,12 @@ public class AQI {
     private int o3_8h; // 臭氧8小时滑动平均
     private int so2; // 二氧化硫1小时平均
     private Date time_point; // 数据发布的时间
-    
+
+    @Override
+    public String toString() {
+        return position_name + "," + aqi + "," + quality + "," + primary_pollutant + ","
+                + pm2_5 + "," + pm10 + "," + co + "," + no2 + "," + o3 + "," + o3_8h + "," + so2;
+    }
     
     
     public int getAqi_id() {

@@ -71,11 +71,6 @@ public class PM25 {
         return results;
     }
 
-    @Override
-    public String toString() {
-        System.out.println();
-        return "";
-    }
     //@Override
     public String toString2() {
         String jdbcUrl = "jdbc:mysql://localhost:3306/api";
