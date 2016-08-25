@@ -12,15 +12,22 @@ import java.util.regex.Pattern;
 
 import io.zbc.api.model.AQI;
 
-public class PM25 {
+public class AQIService {
 
-    // 初始化数据
-    public static List<AQI> getAQI(String tbody) {
+    // 获取<tbody>
+    public static List<AQI> getAQIs(String content) {
+        String tbody = "";// <tbody>
         List<String> trs = new ArrayList<String>();// <tr>
-        List<String> tds = new ArrayList<String>();// <td>
         List<AQI> aqis = new ArrayList<AQI>();// <td>
         Pattern pattern;
         Matcher matcher;
+        // 匹配<tbody>
+        pattern = Pattern.compile("<tbody[^>]*>([\\s\\S]*?)</tbody>");
+        matcher = pattern.matcher(content);
+        // 存在匹配成功的对象
+        if (matcher.find()) {
+            tbody = matcher.group(1);
+        }
         // 匹配<tr>
         pattern = Pattern.compile("<tr>([\\s\\S]*?)</tr>");
         matcher = pattern.matcher(tbody);
@@ -35,7 +42,7 @@ public class PM25 {
             while (matcher.find()) {
                 td += matcher.group(1) + ",";
             }
-            String[] tdList = td.substring(0, td.length()-1).split(",");
+            String[] tdList = td.substring(0, td.length()-1).replaceAll("_", "-1").split(",");
             AQI aqi = new AQI();
             aqi.setPosition_name(tdList[0]);
             aqi.setAqi(Integer.parseInt(tdList[1]));
@@ -51,44 +58,6 @@ public class PM25 {
             aqis.add(aqi);
         }
         return aqis;
-    }
-
-    // 获取<tbody>
-    public static List<AQI> getAQIs(String content) {
-        // 预定义一个ArrayList来存储结果
-        List<AQI> results = new ArrayList<AQI>();
-        // 用来匹配<tbody>
-        Pattern pattern = Pattern.compile("<tbody[^>]*>([\\s\\S]*?)</tbody>");
-        Matcher matcher = pattern.matcher(content);
-        // 是否存在匹配成功的对象
-        Boolean isFind = matcher.find();
-        while (isFind) {
-            // 添加成功匹配的结果
-            results = getAQI(matcher.group(1));
-            // 继续查找下一个匹配对象
-            isFind = matcher.find();
-        }
-        return results;
-    }
-
-    //@Override
-    public String toString2() {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/api";
-        String jdbcDriver = "com.mysql.jdbc.Driver";
-        String jdbcUser = "root";
-        String jdbcPassword = "";
-        String sql = "";
-        Connection conn = null;
-        try {
-            new com.mysql.jdbc.Driver();
-            conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-            Statement st = conn.createStatement();
-            int result = st.executeUpdate(sql);
-            System.out.println(result);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 
 }

@@ -1,5 +1,9 @@
 package io.zbc.api.model;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 
 public class AQI {
@@ -25,8 +29,27 @@ public class AQI {
         return position_name + "," + aqi + "," + quality + "," + primary_pollutant + ","
                 + pm2_5 + "," + pm10 + "," + co + "," + no2 + "," + o3 + "," + o3_8h + "," + so2;
     }
-    
-    
+
+    //@Override
+    public String toString2() {
+        String jdbcUrl = "jdbc:mysql://localhost:3306/api";
+        String jdbcDriver = "com.mysql.jdbc.Driver";
+        String jdbcUser = "root";
+        String jdbcPassword = "";
+        String sql = "";
+        Connection conn = null;
+        try {
+            new com.mysql.jdbc.Driver();
+            conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
+            Statement st = conn.createStatement();
+            int result = st.executeUpdate(sql);
+            System.out.println(result);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public int getAqi_id() {
         return aqi_id;
     }
